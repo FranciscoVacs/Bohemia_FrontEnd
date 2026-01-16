@@ -15,7 +15,18 @@
 /* Estilos base */
 @layer base {
   body {
-    @apply bg-[#020202] text-white font-sans antialiased;
+    @apply bg-[#050508] text-white font-sans antialiased relative;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(204, 255, 0, 0.15), transparent),
+      radial-gradient(ellipse 60% 50% at 80% 60%, rgba(0, 224, 255, 0.1), transparent);
+    pointer-events: none;
+    z-index: -1;
   }
 }
 

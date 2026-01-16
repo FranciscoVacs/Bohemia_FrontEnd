@@ -1,17 +1,18 @@
 <nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-secondary/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
+        <div class="flex items-center justify-between h-20 relative">
             <a routerLink="/"
                 class="font-display text-3xl tracking-wider text-gradient cursor-pointer hover:opacity-90 transition-opacity ">
                 BOHEMIA
             </a>
-            <div class="hidden md:block">
+            <div class="hidden md:block absolute left-1/2 -translate-x-1/2">
                 <div class="flex items-baseline space-x-8">
-                    <a href="#"
+                    <a routerLink="/" fragment="eventos"
                         class="text-gray-100 hover:text-primary transition-colors px-3 py-2 text-sm font-medium uppercase tracking-wide">
                         Eventos
                     </a>
-                    <a href="#"
+                    <a routerLink="/galeria"
+                        routerLinkActive="!text-primary"
                         class="text-gray-100 hover:text-primary transition-colors px-3 py-2 text-sm font-medium uppercase tracking-wide">
                         Galería
                     </a>
@@ -19,11 +20,11 @@
             </div>
             <div class="flex items-center gap-4">
                 <button
-                    class="bg-linear-to-r from-secondary to-primary text-black px-5 py-2 rounded-full font-bold uppercase text-sm tracking-wider hover:opacity-95 transition-all cursor-pointer shadow-[0_0_20px_rgba(0,224,255,0.3),0_0_40px_rgba(204,255,0,0.2)]">
+                    class="bg-linear-to-r from-secondary to-primary text-black px-5 py-1.5 rounded-full font-bold uppercase text-sm tracking-wider hover:opacity-95 transition-all cursor-pointer shadow-[0_0_20px_rgba(0,224,255,0.3),0_0_40px_rgba(204,255,0,0.2)]">
                     COMPRAR ENTRADAS
                 </button>
                 <button class="text-white hover:text-primary transition-colors duration-75 cursor-pointer flex items-center justify-center">
-                     <span class="material-symbols-outlined" style="font-size: 2.5em;">account_circle</span>
+                     <span class="material-symbols-outlined" style="font-size: 2.3em ;">account_circle</span>
                 </button>
             </div>
         </div>
