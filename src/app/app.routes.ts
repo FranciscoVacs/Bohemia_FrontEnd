@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
-import { GaleriaComponent } from './galeria/galeria.component.js';
+import { HomeComponent } from './home/home.component';
+import { GaleriaComponent } from './galeria/galeria.component';
 
 export const routes: Routes = [
+    { path: '', component: HomeComponent },
     { path: 'galeria', component: GaleriaComponent },
 ];

@@ -1,14 +1,2 @@
 <app-navbar></app-navbar>
-<app-hero></app-hero>
-<section id="eventos" class="py-24">
-    <div class="max-w-7xl mx-auto px-4">
-        <h2 class="font-display text-5xl text-white uppercase mb-12">Próximo Evento</h2>
-        <!-- Event Card con datos de la API -->
-        @if (nextEvent) {
-            <app-event-card [event]="nextEvent"></app-event-card>
-        } @else {
-            <p class="text-gray-500">Cargando evento...</p>
-        }
-    </div>
-</section>
 <router-outlet></router-outlet>
