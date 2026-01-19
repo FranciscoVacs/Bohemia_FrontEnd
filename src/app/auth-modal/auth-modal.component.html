@@ -1,0 +1,197 @@
+@if (modalService.isOpen()) {
+<div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]"
+    (click)="closeModal()">
+
+    <!-- Modal Container -->
+    <div class="relative w-full max-w-[480px] bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-[0_0_50px_rgba(0,224,255,0.1)] animate-[slideUp_0.3s_ease-out]"
+        (click)="$event.stopPropagation()">
+
+        <!-- Close Button -->
+        <button class="absolute top-4 right-4 text-white/60 hover:text-secondary transition-colors p-2"
+            (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <!-- Login View -->
+        @if (modalService.currentView() === 'LOGIN') {
+        <div class="flex flex-col gap-6">
+            <h2
+                class="font-display text-4xl text-center bg-gradient-to-br from-secondary to-primary bg-clip-text text-transparent uppercase tracking-wider">
+                Iniciar Sesión
+            </h2>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flex flex-col gap-5">
+                <div class="flex flex-col gap-2">
+                    <label for="login-email"
+                        class="text-xs font-medium text-white/80 uppercase tracking-widest pl-1">Email</label>
+                    <input id="login-email" type="email" formControlName="email" placeholder="tu@email.com"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-secondary focus:bg-white/10 transition-all duration-300" />
+                    @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                    <span class="text-xs text-red-400 pl-1">Email inválido</span>
+                    }
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="login-password"
+                        class="text-xs font-medium text-white/80 uppercase tracking-widest pl-1">Contraseña</label>
+                    <div class="relative">
+                        <input id="login-password" [type]="showPassword ? 'text' : 'password'"
+                            formControlName="password" placeholder="••••••••"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 pr-12 text-white placeholder-white/30 focus:outline-none focus:border-secondary focus:bg-white/10 transition-all duration-300" />
+                        <button type="button" (click)="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 
+                                flex items-center justify-center
+                                text-white/50 hover:text-white 
+                                transition-colors
+                                w-8 h-8">
+                            <span class="material-symbols-outlined text-xl">
+                                {{ showPassword ? 'visibility_off' : 'visibility' }}
+                            </span>
+                        </button>
+                    </div>
+                    @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                    <span class="text-xs text-red-400 pl-1">La contraseña es requerida</span>
+                    }
+                </div>
+
+                @if (errorMessage) {
+                <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm text-center">
+                    {{ errorMessage }}
+                </div>
+                }
+
+                <button type="submit"
+                    class="mt-2 w-full bg-gradient-to-r from-secondary to-primary text-black font-bold uppercase tracking-widest py-4 rounded-xl shadow-[0_0_20px_rgba(0,224,255,0.3)] hover:shadow-[0_0_30px_rgba(0,224,255,0.5)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                    [disabled]="isLoading">
+                    @if (isLoading) {
+                    <span>Cargando...</span>
+                    } @else {
+                    <span>Ingresar</span>
+                    }
+                </button>
+            </form>
+
+            <div class="text-center pt-2 border-t border-white/10">
+                <p class="text-white/60 text-sm">¿No tienes cuenta?
+                    <button (click)="modalService.switchView()"
+                        class="text-secondary font-semibold hover:text-primary transition-colors underline ml-1">
+                        Regístrate
+                    </button>
+                </p>
+            </div>
+        </div>
+        }
+
+        <!-- Register View -->
+        @if (modalService.currentView() === 'REGISTER') {
+        <div class="flex flex-col gap-6">
+            <h2
+                class="font-display text-4xl text-center bg-gradient-to-br from-secondary to-primary bg-clip-text text-transparent uppercase tracking-wider">
+                Crear Cuenta
+            </h2>
+
+            <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="flex flex-col gap-4">
+                <!-- Grid for Name/Surname to fix overflow -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label for="register-name"
+                            class="text-xs font-medium text-white/80 uppercase tracking-widest pl-1">Nombre</label>
+                        <input id="register-name" type="text" formControlName="userName" placeholder="Juan"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-secondary focus:bg-white/10 transition-all duration-300" />
+                        @if (registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched) {
+                        <span class="text-xs text-red-400 pl-1">Requerido</span>
+                        }
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="register-surname"
+                            class="text-xs font-medium text-white/80 uppercase tracking-widest pl-1">Apellido</label>
+                        <input id="register-surname" type="text" formControlName="userSurname" placeholder="Pérez"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-secondary focus:bg-white/10 transition-all duration-300" />
+                        @if (registerForm.get('userSurname')?.invalid && registerForm.get('userSurname')?.touched) {
+                        <span class="text-xs text-red-400 pl-1">Requerido</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="register-email"
+                        class="text-xs font-medium text-white/80 uppercase tracking-widest pl-1">Email</label>
+                    <input id="register-email" type="email" formControlName="email" placeholder="tu@email.com"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-secondary focus:bg-white/10 transition-all duration-300" />
+                    @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+                    <span class="text-xs text-red-400 pl-1">Email requerido</span>
+                    }
+                    @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+                    <span class="text-xs text-red-400 pl-1">Email inválido</span>
+                    }
+                    @if (registerForm.get('email')?.hasError('emailTaken')) {
+                    <span class="text-xs text-red-400 pl-1 font-bold">Este email ya está registrado</span>
+                    }
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="register-birthdate"
+                        class="text-xs font-medium text-white/80 uppercase tracking-widest pl-1">Fecha de
+                        Nacimiento</label>
+                    <input id="register-birthdate" type="date" formControlName="birthDate"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-secondary focus:bg-white/10 transition-all duration-300 appearance-none [&::-webkit-calendar-picker-indicator]:invert" />
+                    @if (registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched) {
+                    <span class="text-xs text-red-400 pl-1">Fecha requerida</span>
+                    }
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="register-password"
+                        class="text-xs font-medium text-white/80 uppercase tracking-widest pl-1">Contraseña</label>
+                    <div class="relative">
+                        <input id="register-password" [type]="showPassword ? 'text' : 'password'"
+                            formControlName="password" placeholder="••••••••"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 pr-12 text-white placeholder-white/30 focus:outline-none focus:border-secondary focus:bg-white/10 transition-all duration-300" />
+                        <button type="button" (click)="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 
+                            flex items-center justify-center
+                            text-white/50 hover:text-white 
+                            transition-colors
+                            w-8 h-8">
+                            <span class="material-symbols-outlined text-xl">
+                                {{ showPassword ? 'visibility_off' : 'visibility' }}
+                            </span>
+                        </button>
+                    </div>
+                    @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                    <div class="text-xs text-red-400 pl-1 flex flex-col gap-0.5">
+                        <span>Mínimo 8 caracteres</span>
+                        <span>1 Mayúscula, 1 minúscula, 1 número</span>
+                    </div>
+                    }
+                </div>
+
+                @if (errorMessage) {
+                <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm text-center">
+                    {{ errorMessage }}
+                </div>
+                }
+
+                <button type="submit"
+                    class="mt-2 w-full bg-gradient-to-r from-secondary to-primary text-black font-bold uppercase tracking-widest py-4 rounded-xl shadow-[0_0_20px_rgba(0,224,255,0.3)] hover:shadow-[0_0_30px_rgba(0,224,255,0.5)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                    [disabled]="isLoading">
+                    @if (isLoading) {
+                    <span>Cargando...</span>
+                    } @else {
+                    <span>Registrarse</span>
+                    }
+                </button>
+            </form>
+
+            <div class="text-center pt-2 border-t border-white/10">
+                <p class="text-white/60 text-sm">¿Ya tienes cuenta?
+                    <button (click)="modalService.switchView()"
+                        class="text-secondary font-semibold hover:text-primary transition-colors underline ml-1">
+                        Inicia Sesión
+                    </button>
+                </p>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+}
